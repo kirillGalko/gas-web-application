@@ -1,0 +1,31 @@
+.gas-data{
+    border: 1px solid gray;
+    border-collapse: collapse;
+}
+
+.gas-data td, .gas-data th{
+    border: 1px solid gray;
+    padding: 5px;
+}
+
+.gas-data thead{
+    background-color: lightgray;
+}
+
+.input-data{
+    background-color: lightblue;
+    height: 350px;
+    width: 250px;
+}
+
+.all-data{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+textarea{
+    height: auto;
+    width: auto;
+    background-color: lightgreen;
+}

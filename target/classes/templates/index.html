@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Показания и статистика по газу</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/js/gas.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+    <section class="all-data">
+        <div>
+            <table class="gas-data">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Предыдущие показания</th>
+                        <th>Текущие показания</th>
+                        <th>Расход</th>
+                        <th>Сумма</th>
+                        <th>Дата передачи показаний</th>
+                        <th>Дата оплаты</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="gas : ${gasData}">
+                        <td th:text="${gas.id}">1</td>
+                        <td th:text="${gas.previous}">0</td>
+                        <td th:text="${gas.current}">427</td>
+                        <td th:text="${gas.spent}">427</td>
+                        <td th:text="${gas.amount}">1866</td>
+                        <td th:text="${gas.dateTransferred}">21.12.2016</td>
+                        <td th:text="${gas.datePaid}">21.12.2016</td>
+                    </tr>
+                </tbody>        
+            </table>
+        </div>        
+        <div class="input-data">
+            <h2>Данные для ввода</h2>
+            <h4>Введите новые показания</h4>
+            <textarea class="create-item"></textarea>
+            <button class="post-data" onclick='createRecord()'>Внести показания</button>
+            <h4>Введите номер записи для удаления</h4>
+            <textarea class="delete-item"></textarea>
+            <button class="delete-data" onclick='deleteRecord()'>Удалить запись</button>   
+        </div>
+
+        <script>
+            // document.getElementById('myButton').onclick = createRecord;
+            function createRecord() { 
+            let current = $('.create-item').val();
+            $.post('/api/new', {current: current}, function(response){
+                if(response.result) {
+                    $('.create-item').val('');
+                    alert('Запись сохранена');
+                } else {
+                    alert('Ошибка :( Повторите попытку позже');
+                }
+            });
+        }
+
+            // document.getElementById('myButton').onclick = deleteRecord;
+            function deleteRecord() { 
+            let id = $('.delete-item').val();
+            $.ajax({
+            url: '/api/delete',
+            type: 'DELETE',
+            data: {id: id},
+            success: function (response) {
+                if(response.result) {
+                     $('.delete-item').val('');
+                     alert('Запись удалена');
+                 } else {
+                     alert('Ошибка :( Повторите попытку позже');
+                 }
+            }
+            });
+            // $.('/api/delete', {id: id}, function(response){
+            //     if(response.result) {
+            //         $('.delete-item').val('');
+            //         alert('Запись удалена');
+            //     } else {
+            //         alert('Ошибка :( Повторите попытку позже');
+            //     }
+            // });
+        }
+        </script>
+    </section>
+</body>
+</html>
